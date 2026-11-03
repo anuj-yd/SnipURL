@@ -1,157 +1,323 @@
-# SnipURL – MERN Stack URL Shortener
+<!--
+  SnipURL - Enhanced GitHub README
+  Copy this entire file into README.md in your repository.
+-->
 
-**Transform long URLs into short, shareable links.**
+<div align="center">
 
-SnipURL is a full-stack URL shortening application built with MongoDB, Express.js, React.js, and Node.js. It lets users generate compact links, reuse existing short codes for duplicate URLs, track link clicks, and access recently created links through a responsive interface.
+# 🔗 SnipURL
+### Turn long URLs into short, clean, shareable links.
 
-## Architecture at a Glance
+**A full-stack URL shortener built with the MERN stack.**
 
-SnipURL connects a React frontend to an Express API backed by MongoDB. The browser also uses `localStorage` to retain recent links.
+<p>
+  <a href="https://snip-url-green.vercel.app/">🌐 Live Demo</a> •
+  <a href="https://github.com/anuj-yd/SnipURL">📂 Source Code</a>
+</p>
 
-### URL Shortening Workflow
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-API-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
-When a user submits a long URL, the backend validates it, checks for duplicates, and either returns an existing short code or creates a new record.
+</div>
 
-### Redirection and Click Tracking Workflow
+---
 
-When a visitor opens a short link, the backend looks up its short code, increments the click counter, and responds with an HTTP 302 redirect. Unknown codes return a 404 response.
+## 📌 Table of Contents
 
-## Features
+- [✨ Overview](#-overview)
+- [🚀 Live Application](#-live-application)
+- [⭐ Features](#-features)
+- [🧰 Technology Stack](#-technology-stack)
+- [🏗️ System Architecture](#️-system-architecture)
+- [🔄 How It Works](#-how-it-works)
+- [📁 Project Structure](#-project-structure)
+- [⚙️ Getting Started](#️-getting-started)
+- [🔌 API Reference](#-api-reference)
+- [🗄️ Data Model](#️-data-model)
+- [🌍 Deployment](#-deployment)
+- [🔮 Future Enhancements](#-future-enhancements)
+- [📚 Key Learnings](#-key-learnings)
+- [🤝 Contributing](#-contributing)
+- [👨‍💻 Author](#-author)
+- [📄 License](#-license)
 
-- **Instant URL shortening:** Convert valid `http://` and `https://` URLs into short links.
-- **Unique short codes:** Generate seven-character alphanumeric identifiers using Nano ID.
-- **Duplicate detection:** Return the existing short code when a URL has already been shortened.
-- **Click tracking:** Increment the click counter whenever a short link is accessed.
-- **Automatic redirection:** Redirect visitors to the original destination using HTTP 302.
-- **Recent links:** Keep the five most recently generated links in browser `localStorage`.
-- **Copy to clipboard:** Copy a generated short URL with visual feedback.
-- **Loading states:** Show a loading indicator while API requests are processing.
-- **Error handling:** Return a 404 response when a short code doesn't exist.
-- **Responsive design:** Provide a mobile-first experience across desktop, tablet, and mobile screens.
+---
 
-## Technology Stack
+## ✨ Overview
 
-| Layer | Technologies |
+**SnipURL** is a full-stack URL shortening application that transforms long web addresses into compact, easy-to-share links. It is built using **MongoDB, Express.js, React.js, and Node.js**.
+
+The application provides a simple interface where a user can submit a valid URL and receive a shorter link. When the generated link is opened, the backend finds the original destination, updates its click count, and redirects the visitor.
+
+SnipURL also checks whether a URL has already been shortened. Instead of creating another record for a duplicate URL, it can return the existing short link. Recently generated links are retained in the browser using `localStorage`.
+
+### 🎯 Project Goal
+
+To build a practical full-stack application that demonstrates REST API development, database integration, short-code generation, HTTP redirection, click tracking, and responsive frontend development.
+
+---
+
+## 🚀 Live Application
+
+| Resource | Link |
 |---|---|
-| Frontend | React 18, Vite, React Router v6 |
-| Styling | Tailwind CSS v3, Google Fonts (Inter) |
-| HTTP client | Axios |
-| Backend | Node.js, Express.js |
-| Database | MongoDB, Mongoose |
-| Short-code generation | Nano ID |
-| Browser storage | localStorage |
-| Development | npm, Nodemon |
+| **Live Demo** | https://snip-url-green.vercel.app/ |
+| **GitHub Repository** | https://github.com/anuj-yd/SnipURL |
 
-## How It Works
+> Open the live application, enter a valid `https://` or `http://` address, and generate a shareable short link.
 
-1. The user enters a valid long URL in the React application.
-2. The frontend sends the URL to `POST /api/url/shorten`.
-3. The backend validates the URL and checks whether it already exists.
-4. If it exists, the backend returns its existing short code.
-5. Otherwise, the backend generates a seven-character Nano ID and saves the URL in MongoDB.
-6. The frontend displays the generated short URL and allows the user to copy it.
-7. When someone opens the short URL, the backend looks up the code, increments its click counter, and redirects the visitor to the original URL.
+---
 
-```text
-User enters URL
-      |
-      v
-React frontend
-      |
-      v
-POST /api/url/shorten
-      |
-      v
-Validate URL
-      |
-      v
-Check MongoDB for duplicate
-      |
-      +------ Existing URL ------> Return existing short code
-      |
-      +------ New URL -----------> Generate Nano ID
-                                      |
-                                      v
-                                 Save in MongoDB
-                                      |
-                                      v
-                              Return shortened URL
-                                      |
-                                      v
-                              Display result in UI
+## ⭐ Features
 
-Visitor opens short URL
-      |
-      v
-GET /api/url/:code
-      |
-      v
-Find original URL in MongoDB
-      |
-      v
-Increment click counter
-      |
-      v
-HTTP 302 redirect
+| Feature | Description |
+|---|---|
+| 🔗 **URL Shortening** | Converts valid long URLs into compact, shareable links. |
+| 🆔 **Unique Short Codes** | Uses Nano ID to generate 7-character alphanumeric short codes. |
+| ♻️ **Duplicate Detection** | Checks whether the submitted long URL already exists and reuses its short code. |
+| ↪️ **Automatic Redirection** | Redirects visitors to the original URL using an HTTP 302 response. |
+| 📈 **Click Tracking** | Increments the click counter whenever a short link is accessed. |
+| 📋 **Copy to Clipboard** | Lets users copy a generated short link with visual feedback. |
+| 🕘 **Recent Links** | Keeps the five most recently generated links in browser `localStorage`. |
+| ⏳ **Loading States** | Displays a loading indicator while API requests are being processed. |
+| 🚫 **404 Handling** | Returns a not-found response when an unknown short code is requested. |
+| 📱 **Responsive UI** | Provides a mobile-first interface for desktop, tablet, and mobile screens. |
+
+---
+
+## 🧰 Technology Stack
+
+| Layer | Technology | Purpose |
+|---|---|---|
+| Frontend | React 18 | Component-based user interface |
+| Build Tool | Vite | Frontend development and build tooling |
+| Routing | React Router v6 | Client-side navigation |
+| Styling | Tailwind CSS v3 | Responsive UI styling |
+| Typography | Google Fonts – Inter | Interface typography |
+| HTTP Client | Axios | Frontend-to-backend API communication |
+| Backend Runtime | Node.js | Server-side JavaScript runtime |
+| Backend Framework | Express.js | REST API and request handling |
+| Database | MongoDB | Persistent URL mapping storage |
+| ODM | Mongoose | MongoDB schema and data operations |
+| Short Code | Nano ID | Generation of compact, 7-character identifiers |
+| Browser Storage | localStorage | Stores recent links in the user's browser |
+| Development | npm, Nodemon | Package management and backend development |
+
+---
+
+## 🏗️ System Architecture
+
+SnipURL follows a simple client-server architecture. The React frontend communicates with the Express.js backend through REST endpoints. MongoDB stores the original URLs, generated short codes, and click information. The browser's `localStorage` is used for the recent-links experience.
+
+### Architecture Diagram
+
+```mermaid
+flowchart TB
+    U[User / Browser]
+    FE[React 18 + Vite Frontend]
+    AX[Axios API Service]
+    API[Node.js + Express.js Server]
+
+    subgraph SHORTEN[URL Shortening]
+        S1[POST /api/url/shorten]
+        S2[Validate submitted URL]
+        S3{URL already exists?}
+        S4[Return existing short code]
+        S5[Generate 7-character Nano ID]
+        S6[Save URL mapping in MongoDB]
+        S7[Return short URL to frontend]
+        S1 --> S2 --> S3
+        S3 -->|Yes| S4
+        S3 -->|No| S5 --> S6 --> S7
+    end
+
+    subgraph REDIRECT[URL Redirection]
+        R1[GET /api/url/:code]
+        R2[Find short code in MongoDB]
+        R3{Short code found?}
+        R4[Increment click counter]
+        R5[HTTP 302 redirect to original URL]
+        R6[404 Short URL not found]
+        R1 --> R2 --> R3
+        R3 -->|Yes| R4 --> R5
+        R3 -->|No| R6
+    end
+
+    DB[(MongoDB)]
+    LS[(Browser localStorage<br/>Recent 5 links)]
+
+    U --> FE
+    FE --> AX --> API
+    API --> S1
+    S6 --> DB
+    S3 -. duplicate lookup .-> DB
+    API --> R1
+    R2 -. lookup .-> DB
+    R4 -. update clicks .-> DB
+    S4 --> S7
+    S7 --> FE
+    FE <--> LS
+    R5 --> U
+
+    classDef frontend fill:#dbeafe,stroke:#2563eb,color:#111827
+    classDef backend fill:#e0f2fe,stroke:#0284c7,color:#111827
+    classDef database fill:#dcfce7,stroke:#16a34a,color:#111827
+    classDef decision fill:#fef3c7,stroke:#d97706,color:#111827
+    classDef error fill:#fee2e2,stroke:#dc2626,color:#111827
+
+    class U,FE,AX frontend
+    class API,S1,S2,S4,S5,S6,S7,R1,R2,R4,R5 backend
+    class DB,LS database
+    class S3,R3 decision
+    class R6 error
 ```
 
-## Project Structure
+### Main Components
+
+- **Frontend:** Collects the long URL, displays the generated short link, provides copy feedback, and shows recent links.
+- **API Layer:** Handles URL creation, duplicate checks, short-code lookup, click-count updates, and redirects.
+- **MongoDB:** Persists the mapping between a short code and its original URL.
+- **Browser Storage:** Retains the five most recently generated links on the client side.
+
+> **Implementation note:** The current project uses Nano ID for short-code generation and MongoDB for URL lookups. Redis caching and Base62 ID conversion are possible future improvements; they are not represented as currently implemented features in this architecture.
+
+---
+
+## 🔄 How It Works
+
+### 1. URL Shortening Workflow
+
+1. The user enters a long URL in the React interface.
+2. The frontend sends the URL to `POST /api/url/shorten` through Axios.
+3. The backend validates the submitted URL.
+4. The backend checks MongoDB to determine whether the URL has already been shortened.
+5. If the URL exists, the existing short code is returned.
+6. If it is new, the backend generates a 7-character Nano ID and saves the URL mapping in MongoDB.
+7. The API returns the short URL and related link details to the frontend.
+8. The UI displays the result and provides a copy-to-clipboard action.
+
+### URL Shortening Flow
+
+```mermaid
+flowchart TD
+    A([Start]) --> B[Enter long URL]
+    B --> C[Submit URL]
+    C --> D[Backend validates URL]
+    D --> E{URL already in database?}
+    E -->|Yes| F[Fetch existing short code]
+    E -->|No| G[Generate Nano ID]
+    G --> H[Save URL mapping in MongoDB]
+    F --> I[Return short URL]
+    H --> I
+    I --> J[Display result and copy option]
+    J --> K([End])
+```
+
+### 2. URL Redirection and Click Tracking Workflow
+
+1. A visitor opens a generated short link.
+2. The request reaches `GET /api/url/:code`.
+3. The backend searches MongoDB using the supplied short code.
+4. If the code exists, the click counter is incremented.
+5. The server responds with an HTTP `302` redirect to the original URL.
+6. If the code does not exist, the API returns a `404 Not Found` response.
+
+### Redirection Flow
+
+```mermaid
+flowchart TD
+    A([Visitor opens short URL]) --> B[GET /api/url/:code]
+    B --> C[Find short code in MongoDB]
+    C --> D{Code exists?}
+    D -->|Yes| E[Increment click counter]
+    E --> F[HTTP 302 redirect]
+    F --> G[Open original destination]
+    D -->|No| H[Return 404 Not Found]
+```
+
+---
+
+## 📁 Project Structure
 
 ```text
 SnipURL/
+│
 ├── backend/
 │   ├── config/
-│   │   └── db.js
+│   │   └── db.js                  # MongoDB connection configuration
+│   │
 │   ├── controllers/
-│   │   └── urlController.js
+│   │   └── urlController.js       # URL shortening and redirect logic
+│   │
 │   ├── models/
-│   │   └── Url.js
+│   │   └── Url.js                 # Mongoose URL model
+│   │
 │   ├── routes/
-│   │   └── urlRoutes.js
-│   ├── .env
-│   ├── server.js
-│   └── package.json
+│   │   └── urlRoutes.js           # URL API routes
+│   │
+│   ├── .env                       # Local environment variables (create locally)
+│   ├── server.js                  # Express server entry point
+│   └── package.json               # Backend dependencies and scripts
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── UrlForm.jsx
-│   │   │   ├── ShortUrlResult.jsx
-│   │   │   └── RecentLinks.jsx
+│   │   │   ├── UrlForm.jsx        # Long URL input form
+│   │   │   ├── ShortUrlResult.jsx # Generated short URL and copy action
+│   │   │   └── RecentLinks.jsx    # Recent links interface
+│   │   │
 │   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   └── RedirectHandler.jsx
+│   │   │   ├── Home.jsx           # Main application page
+│   │   │   └── RedirectHandler.jsx# Short-link route handling
+│   │   │
 │   │   ├── services/
-│   │   │   └── api.js
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
+│   │   │   └── api.js             # Axios API configuration and calls
+│   │   │
+│   │   ├── App.jsx                # Application routes and layout
+│   │   ├── main.jsx               # React application entry point
+│   │   └── index.css              # Global styles and Tailwind directives
+│   │
 │   ├── index.html
 │   ├── tailwind.config.js
 │   ├── postcss.config.js
 │   ├── vite.config.js
 │   └── package.json
 │
+├── .gitignore
+├── CONTRIBUTORS.md
+├── render.yaml                    # Render deployment configuration
 └── README.md
 ```
 
-## Getting Started
+---
 
-### Prerequisites
+## ⚙️ Getting Started
 
-- Node.js v18 or later
-- npm
-- MongoDB running locally, or a MongoDB Atlas connection string
-- Git
+Follow these steps to run SnipURL locally.
 
-### 1. Clone the repository
+### ✅ Prerequisites
+
+Make sure the following tools are installed:
+
+- [Node.js](https://nodejs.org/) – version 18 or later recommended
+- npm – included with Node.js
+- [MongoDB Community Server](https://www.mongodb.com/try/download/community) or a [MongoDB Atlas](https://www.mongodb.com/atlas) database
+- [Git](https://git-scm.com/)
+
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/anuj-yd/SnipURL.git
 cd SnipURL
 ```
 
-### 2. Set up the backend
+### 2️⃣ Configure and Run the Backend
+
+Open a terminal in the project root and run:
 
 ```bash
 cd backend
@@ -166,21 +332,35 @@ MONGO_URI=mongodb://localhost:27017/urlshortener
 BASE_URL=http://localhost:5000
 ```
 
+**Environment variable details:**
+
+| Variable | Description | Local Example |
+|---|---|---|
+| `PORT` | Port on which the Express server runs | `5000` |
+| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017/urlshortener` |
+| `BASE_URL` | Base address used to construct short links | `http://localhost:5000` |
+
 Start the backend:
 
 ```bash
-# Development mode (requires the dev script to be configured)
+# Development mode
 npm run dev
 
 # Production mode
 npm start
 ```
 
-The backend should be available at `http://localhost:5000`.
+The backend should be available at:
 
-### 3. Set up the frontend
+```text
+http://localhost:5000
+```
 
-Open a second terminal:
+> Use the script supported by the backend `package.json`. If `npm run dev` is unavailable, check the available scripts or use the configured start command.
+
+### 3️⃣ Configure and Run the Frontend
+
+Open a **second terminal** from the project root:
 
 ```bash
 cd frontend
@@ -188,17 +368,29 @@ npm install
 npm run dev
 ```
 
-Vite will display the local frontend URL, typically `http://localhost:5173`.
+Vite will show the local frontend address in the terminal. It is commonly:
 
-> **Note:** If Tailwind CSS isn't configured in the project yet, install and configure the version compatible with the existing Tailwind v3 setup. The configuration files listed in the project structure may already be present.
+```text
+http://localhost:5173
+```
 
-## API Reference
+Open that address in your browser and test the application.
 
-### Shorten a URL
+> Ensure the frontend API configuration points to the backend URL and port you are running locally. Check `frontend/src/services/api.js` if you need to update it.
 
-`POST /api/url/shorten`
+---
 
-Creates a short link for a valid URL. If duplicate detection is enabled for the submitted URL, the existing short code is returned instead of creating another record.
+## 🔌 API Reference
+
+The backend exposes the following primary endpoints.
+
+### 1. Shorten a URL
+
+| Property | Value |
+|---|---|
+| Method | `POST` |
+| Endpoint | `/api/url/shorten` |
+| Purpose | Creates a short link for a valid long URL |
 
 **Request body**
 
@@ -220,13 +412,15 @@ Creates a short link for a valid URL. If duplicate detection is enabled for the 
 }
 ```
 
-The example response illustrates the expected response shape. The actual HTTP status code and field names should match the backend implementation.
+> The response above illustrates the documented response shape. Confirm the exact status code and fields against the current controller if you change the implementation.
 
-### Redirect using a short code
+### 2. Redirect Using a Short Code
 
-`GET /api/url/:code`
-
-Looks up the supplied short code, increments its click count, and redirects the visitor to the original URL.
+| Property | Value |
+|---|---|
+| Method | `GET` |
+| Endpoint | `/api/url/:code` |
+| Purpose | Finds the original URL, updates click count, and redirects the visitor |
 
 **Example request**
 
@@ -238,11 +432,11 @@ GET /api/url/aB3dE7f
 
 | Status | Meaning |
 |---|---|
-| 302 | Redirect to the original URL |
-| 404 | No URL exists for the supplied short code |
-| 500 | Unexpected server error |
+| `302` | Redirects to the original URL |
+| `404` | The requested short code does not exist |
+| `500` | An unexpected server error occurred |
 
-**Example 404 response**
+**Example not-found response**
 
 ```json
 {
@@ -250,36 +444,57 @@ GET /api/url/aB3dE7f
 }
 ```
 
-## Environment Variables
+---
 
-| Variable | Description | Local example |
-|---|---|---|
-| `PORT` | Port used by the Express server | `5000` |
-| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017/urlshortener` |
-| `BASE_URL` | Base URL used to construct short links | `http://localhost:5000` |
+## 🗄️ Data Model
 
-**Security:** Don't commit real credentials or production secrets. Add `.env` to `.gitignore` and provide a `.env.example` containing placeholder values for contributors.
+The URL model stores the relationship between a generated short code and its original destination.
 
-## Deployment
-
-A possible deployment setup is:
-
-| Component | Platform options |
+| Field | Description |
 |---|---|
-| Frontend | Vercel, Netlify |
-| Backend | Render, Railway |
-| Database | MongoDB Atlas |
+| `_id` | MongoDB document identifier |
+| `longUrl` | Original destination URL |
+| `shortCode` | Generated 7-character Nano ID |
+| `clicks` | Number of times the short link has been accessed |
+| `createdAt` | Date and time when the record was created |
 
-Before deploying:
+**Conceptual document example**
 
-1. Create a production MongoDB database and configure its connection string.
-2. Set the backend environment variables in the hosting provider.
-3. Set `BASE_URL` to the deployed backend's public URL.
-4. Configure the frontend API base URL to point to the deployed backend.
-5. Configure CORS to allow requests from the deployed frontend domain.
-6. Deploy the frontend and verify that URL creation and redirection work end to end.
+```json
+{
+  "_id": "MongoDB-generated-id",
+  "longUrl": "https://example.com/very/long/path",
+  "shortCode": "aB3dE7f",
+  "clicks": 0,
+  "createdAt": "2026-11-03T10:00:00.000Z"
+}
+```
 
-Example CORS configuration (adapt it to the existing `server.js` implementation):
+The exact field configuration and timestamp behavior are defined in `backend/models/Url.js`.
+
+---
+
+## 🌍 Deployment
+
+The application can be deployed using separate hosting services for the frontend, backend, and database.
+
+| Component | Suggested Platform |
+|---|---|
+| Frontend | [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/) |
+| Backend | [Render](https://render.com/) or [Railway](https://railway.com/) |
+| Database | [MongoDB Atlas](https://www.mongodb.com/atlas) |
+
+### Deployment Checklist
+
+1. Create a production database in MongoDB Atlas.
+2. Add the production `MONGO_URI`, `PORT`, and `BASE_URL` to the backend hosting provider's environment settings.
+3. Set `BASE_URL` to the deployed backend's public URL so generated short links point to the correct server.
+4. Configure the frontend API base URL to use the deployed backend.
+5. Configure backend CORS to allow requests from the deployed frontend domain.
+6. Deploy both applications and test URL creation, duplicate detection, redirection, and click tracking.
+7. Confirm that the frontend's client-side routes work correctly after deployment.
+
+**Example CORS configuration** — adapt the allowed origin to your deployed frontend domain and the existing `server.js` setup:
 
 ```js
 app.use(cors({
@@ -287,43 +502,78 @@ app.use(cors({
 }));
 ```
 
-## Future Enhancements
+---
 
-The following improvements could extend the project's functionality and scalability:
+## 🔮 Future Enhancements
 
-- **Base62 short-code generation:** Explore a custom Base62 encoding approach for compact, deterministic identifiers. This is a proposed enhancement; the current implementation uses Nano ID.
-- **User authentication:** Add JWT-based authentication and user-specific URL management.
-- **Analytics dashboard:** Display click statistics, traffic trends, and link performance.
-- **QR code generation:** Create downloadable QR codes for shortened links.
-- **Custom aliases:** Let users choose memorable short codes.
-- **Link expiration:** Support configurable expiration dates for short URLs.
-- **Rate limiting:** Protect API endpoints from abuse and excessive requests.
-- **Redis caching:** Cache frequently accessed short-code lookups to improve redirect performance.
-- **URL management:** Allow authenticated users to view, edit, and delete their links.
-- **Docker support:** Containerize the frontend and backend to make local setup and deployment more consistent.
+The following ideas can extend SnipURL beyond its current functionality:
 
-## Learning Outcomes
+- 🔐 **User Authentication:** Add JWT-based authentication and user-specific link management.
+- 📊 **Analytics Dashboard:** Display click counts, traffic trends, and link performance.
+- ⚡ **Redis Caching:** Cache frequently requested short-code mappings to reduce repeated database reads.
+- 🔢 **Base62 Encoding:** Explore converting unique numeric IDs into compact Base62 codes instead of using Nano ID.
+- ✏️ **Custom Aliases:** Allow users to create memorable short codes.
+- ⏰ **Link Expiration:** Support automatic expiry of short links.
+- 🛡️ **Rate Limiting:** Protect endpoints against excessive requests and abuse.
+- 📱 **QR Code Generation:** Generate downloadable QR codes for short links.
+- 🗂️ **URL Management:** Allow authenticated users to view, organize, update, and delete their links.
+- 🐳 **Docker Support:** Containerize the frontend and backend for consistent development and deployment.
 
-Working on SnipURL provides practical experience with:
+---
 
-- Building and organizing a full-stack MERN application.
-- Designing and integrating REST APIs.
-- Modeling and querying data with MongoDB and Mongoose.
-- Understanding HTTP redirects and status codes.
-- Handling asynchronous frontend-to-backend communication.
-- Managing browser-side data with localStorage.
-- Building reusable React components and client-side routes.
-- Structuring backend code into routes, controllers, models, and configuration.
+## 📚 Key Learnings
 
-## Author
+Building SnipURL offers hands-on experience with:
+
+- Developing and integrating a full-stack MERN application.
+- Designing RESTful API endpoints and connecting frontend components to backend services.
+- Structuring backend code using routes, controllers, models, and configuration modules.
+- Working with MongoDB and Mongoose for persistent data storage.
+- Generating compact identifiers using Nano ID.
+- Understanding HTTP status codes and redirect behavior, especially HTTP 302.
+- Implementing duplicate detection and click tracking.
+- Managing asynchronous API requests and UI loading/error states.
+- Using browser `localStorage` to preserve recent links.
+- Building responsive interfaces with React and Tailwind CSS.
+
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, and bug reports are welcome!
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature/your-feature-name`.
+3. Commit your changes: `git commit -m "Add: your feature description"`.
+4. Push the branch: `git push origin feature/your-feature-name`.
+5. Open a Pull Request describing your changes.
+
+Please keep pull requests focused and include clear steps to reproduce bug fixes where applicable.
+
+---
+
+## 👨‍💻 Author
 
 **Anuj Kumar Yadav**  
-B.Tech, Computer Science and Engineering  
+B.Tech – Computer Science and Engineering  
 Lovely Professional University
 
-- GitHub: https://github.com/anuj-yd
-- Project repository: https://github.com/anuj-yd/SnipURL
+- **GitHub:** [anuj-yd](https://github.com/anuj-yd)
+- **Project:** [SnipURL Repository](https://github.com/anuj-yd/SnipURL)
+- **Live Demo:** [SnipURL](https://snip-url-green.vercel.app/)
 
-## License
+---
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+## 📄 License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file in the repository for details.
+
+---
+
+<div align="center">
+
+### ⭐ If you find SnipURL useful, consider giving the repository a star!
+
+**Built with ❤️ using the MERN Stack**
+
+</div>
