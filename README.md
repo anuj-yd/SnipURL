@@ -11,7 +11,7 @@
 **A full-stack URL shortener built with the MERN stack.**
 
 <p>
-  <a href="https://snip-url-green.vercel.app/">🌐 Live Demo</a> •
+  <a href="https://snipurl-rho.vercel.app/">🌐 Live Demo</a> •
   <a href="https://github.com/anuj-yd/SnipURL">📂 Source Code</a>
 </p>
 
@@ -65,7 +65,7 @@ To build a practical full-stack application that demonstrates REST API developme
 
 | Resource | Link |
 |---|---|
-| **Live Demo** | https://snip-url-green.vercel.app/ |
+| **Live Demo** | https://snipurl-rho.vercel.app/ |
 | **GitHub Repository** | https://github.com/anuj-yd/SnipURL |
 
 > Open the live application, enter a valid `https://` or `http://` address, and generate a shareable short link.
@@ -560,7 +560,7 @@ Lovely Professional University
 
 - **GitHub:** [anuj-yd](https://github.com/anuj-yd)
 - **Project:** [SnipURL Repository](https://github.com/anuj-yd/SnipURL)
-- **Live Demo:** [SnipURL](https://snip-url-green.vercel.app/)
+- **Live Demo:** [SnipURL](https://snipurl-rho.vercel.app/)
 
 ---
 
