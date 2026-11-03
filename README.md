@@ -6,21 +6,15 @@ SnipURL is a full-stack URL shortening application built with MongoDB, Express.j
 
 ## Architecture at a Glance
 
-The following diagram shows how the React frontend, Express backend, MongoDB database, and browser storage work together.
-
-![SnipURL overall system architecture](docs/images/system-architecture.png)
+SnipURL connects a React frontend to an Express API backed by MongoDB. The browser also uses `localStorage` to retain recent links.
 
 ### URL Shortening Workflow
 
 When a user submits a long URL, the backend validates it, checks for duplicates, and either returns an existing short code or creates a new record.
 
-![SnipURL URL shortening workflow](docs/images/url-shortening-flow.png)
-
 ### Redirection and Click Tracking Workflow
 
 When a visitor opens a short link, the backend looks up its short code, increments the click counter, and responds with an HTTP 302 redirect. Unknown codes return a 404 response.
-
-![SnipURL redirection and click tracking workflow](docs/images/redirect-click-tracking-flow.png)
 
 ## Features
 
@@ -58,6 +52,49 @@ When a visitor opens a short link, the backend looks up its short code, incremen
 6. The frontend displays the generated short URL and allows the user to copy it.
 7. When someone opens the short URL, the backend looks up the code, increments its click counter, and redirects the visitor to the original URL.
 
+```text
+User enters URL
+      |
+      v
+React frontend
+      |
+      v
+POST /api/url/shorten
+      |
+      v
+Validate URL
+      |
+      v
+Check MongoDB for duplicate
+      |
+      +------ Existing URL ------> Return existing short code
+      |
+      +------ New URL -----------> Generate Nano ID
+                                      |
+                                      v
+                                 Save in MongoDB
+                                      |
+                                      v
+                              Return shortened URL
+                                      |
+                                      v
+                              Display result in UI
+
+Visitor opens short URL
+      |
+      v
+GET /api/url/:code
+      |
+      v
+Find original URL in MongoDB
+      |
+      v
+Increment click counter
+      |
+      v
+HTTP 302 redirect
+```
+
 ## Project Structure
 
 ```text
@@ -94,12 +131,6 @@ SnipURL/
 │   ├── postcss.config.js
 │   ├── vite.config.js
 │   └── package.json
-│
-├── docs/
-│   └── images/
-│       ├── system-architecture.png
-│       ├── url-shortening-flow.png
-│       └── redirect-click-tracking-flow.png
 │
 └── README.md
 ```
